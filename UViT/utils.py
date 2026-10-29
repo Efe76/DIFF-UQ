@@ -391,13 +391,15 @@ def parse_args_and_config():
         default="time_uniform",
         help="skip according to ('uniform' or 'quadratic' for DDIM/DDPM; 'logSNR' or 'time_uniform' or 'time_quadratic' for DPM-Solver)",
     )
-    parser.add_argument("--timesteps", type=int, default=1000, help="number of steps involved")
+    parser.add_argument("--timesteps", type=int, default=50, help="number of diffusion steps for the base image")
+    parser.add_argument("--mc_timesteps", type=int, default=10, help="number of steps for the MC / screening samples")
     parser.add_argument(
         "--eta",
         type=float,
         default=0.0,
         help="eta used to control the variances of sigma",
     )
+    # use --fixed_class 10000 to sample a random class per image
     parser.add_argument("--fixed_class", type=int, default=None, help="fixed class label for conditional sampling")
     parser.add_argument("--scale", type=float, default=None)
     parser.add_argument("--denoise", action="store_true", default=False)
@@ -414,6 +416,12 @@ def parse_args_and_config():
     parser.add_argument("--encoder_path", type=str)
     parser.add_argument("--uvit_path", type=str)
     parser.add_argument("--exp_path", type=str, default="./imgs")
+    parser.add_argument("--sigma_perturb", type=float, default=0.2, help="sigma for input perturbation")
+    parser.add_argument("--zo_iters", type=int, default=4, help="number of zero-order search iterations")
+    parser.add_argument("--zo_neighborhood", type=int, default=8, help="number of neighbors per zero-order iteration")
+    parser.add_argument("--zo_lambda", type=float, default=0.2, help="zero-order neighborhood radius")
+    parser.add_argument("--num_shards", type=int, default=1)
+    parser.add_argument("--shard_id", type=int, default=0)
     args = parser.parse_args()
 
     if args.config == "imagenet256_uvit_huge.py":

@@ -47,8 +47,8 @@ def compute_generative_uncertainty(path, M, eu_type="entropy"):
     # count number of images in path
     N = len(os.listdir(f"{path}/{0}/imgs"))
 
-    for m in range(M):
-        print(f"Processing model {m}")
+    for m in range(1, M):
+        print(f"Processing MC sample {m}")
         clip_vecs = []
         for i in range(N):
             image = preprocess(Image.open(f"{path}/{m}/imgs/{i:05d}.png")).unsqueeze(0).to(device)
@@ -63,7 +63,7 @@ def compute_generative_uncertainty(path, M, eu_type="entropy"):
     #### 2) Compute the entropy of the semantic likelihood
 
     features = []
-    for m in range(M):
+    for m in range(1, M):
         path_m = f"{path}/{m}/clip_features.pt"
         features.append(torch.load(path_m))
 

@@ -51,7 +51,7 @@ def get_config():
 
     config.dataset = d(
         name="imagenet256_features",
-        path="...",
+        path="/scratch-nvme/ml-datasets/imagenet/ILSVRC/Data/CLS-LOC/train",
         cfg=True,
         p_uncond=0.1,
         image_size=256,
